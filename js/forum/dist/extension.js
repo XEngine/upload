@@ -29,10 +29,21 @@ System.register("flagrow/upload/components/UploadButton", ["flarum/Component", "
 
                         // initial state of the button
                         this.loading = false;
+
+                        this.dragAndDropEnabled = function () {
+                            var div = document.createElement('div');
+                            return ('draggable' in div || 'ondragstart' in div && 'ondrop' in div) && 'FormData' in window && 'FileReader' in window;
+                        }();
                     }
                 }, {
                     key: "view",
                     value: function view() {
+                        if (this.dragAndDropEnabled) {
+                            this.textAreaObj.on('dragover dragenter', function (e) {
+                                this.textAreaObj.addClass('is-dragover');
+                            });
+                        }
+
                         return m('div', {className: 'Button hasIcon flagrow-upload-button Button--icon'}, [this.loading ? LoadingIndicator.component({className: 'Button-icon'}) : icon('file-o', {className: 'Button-icon'}), m('span', {className: 'Button-label'}, this.loading ? app.translator.trans('flagrow-upload.forum.states.loading') : app.translator.trans('flagrow-upload.forum.buttons.attach')), m('form#flagrow-upload-form', [m('input', {
                             type: 'file',
                             name: 'flagrow-upload-input',

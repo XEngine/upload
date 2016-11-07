@@ -27,7 +27,7 @@ export default class UploadButton extends Component {
      */
     view() {
         if (this.dragAndDropEnabled) {
-            this.textAreaObj.on('dragover dragenter', function (e) {
+            $(this.textAreaObj).on('dragover dragenter', function (e) {
                 this.textAreaObj.addClass('is-dragover');
             });
         }
